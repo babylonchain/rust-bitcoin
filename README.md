@@ -81,6 +81,7 @@ To build with the MSRV you will need to pin some dependencies:
 ```
 cargo update -p serde --precise 1.0.156
 cargo update -p syn --precise 1.0.107
+cargo update -p half --precise 1.7.1
 ```
 
 ## Installing Rust
