@@ -6,28 +6,17 @@
 //! Functions needed by all parts of the Bitcoin library.
 //!
 
-pub mod key;
-pub mod ecdsa;
-pub mod schnorr;
 pub mod address;
 pub mod amount;
 pub mod base58;
-pub mod bip32;
-pub mod bip143;
-pub mod bip152;
+pub mod bip158;
 pub mod hash;
 pub mod merkleblock;
 pub mod misc;
-pub mod psbt;
-pub mod taproot;
 pub mod uint;
-pub mod bip158;
-pub mod sighash;
 
 pub(crate) mod endian;
 
-use crate::prelude::*;
-use crate::io;
 use core::fmt;
 
 use crate::consensus::encode;
@@ -85,29 +74,12 @@ impl std::error::Error for Error {
 
         match self {
             Encode(e) => Some(e),
-            BlockBadProofOfWork | BlockBadTarget => None
+            BlockBadProofOfWork | BlockBadTarget => None,
         }
     }
 }
 
 #[doc(hidden)]
 impl From<encode::Error> for Error {
-    fn from(e: encode::Error) -> Error {
-        Error::Encode(e)
-    }
-}
-
-// core2 doesn't have read_to_end
-pub(crate) fn read_to_end<D: io::Read>(mut d: D) -> Result<Vec<u8>, io::Error> {
-    let mut result = vec![];
-    let mut buf = [0u8; 64];
-    loop {
-        match d.read(&mut buf) {
-            Ok(0) => break,
-            Ok(n) => result.extend_from_slice(&buf[0..n]),
-            Err(ref e) if e.kind() == io::ErrorKind::Interrupted => {},
-            Err(e) => return Err(e),
-        };
-    }
-    Ok(result)
+    fn from(e: encode::Error) -> Error { Error::Encode(e) }
 }

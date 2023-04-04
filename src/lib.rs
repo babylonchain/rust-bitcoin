@@ -61,24 +61,21 @@ extern crate test;
 extern crate alloc;
 
 // Re-export dependencies we control.
-pub use bitcoin_hashes as hashes;
-pub use secp256k1;
-pub use bech32;
-#[cfg(feature="bitcoinconsensus")]
+#[cfg(feature = "bitcoinconsensus")]
 pub use bitcoinconsensus;
+pub use {bech32, bitcoin_hashes as hashes};
 
 #[cfg(feature = "serde")]
 #[macro_use]
 extern crate actual_serde as serde;
 
-
 #[cfg(test)]
 #[macro_use]
 mod test_macros;
 mod internal_macros;
+mod parse;
 #[cfg(feature = "serde")]
 mod serde_utils;
-mod parse;
 
 #[macro_use]
 pub mod network;
@@ -109,12 +106,7 @@ pub use crate::hash_types::*;
 pub use crate::network::constants::Network;
 pub use crate::util::address::{Address, AddressType};
 pub use crate::util::amount::{Amount, Denomination, SignedAmount};
-pub use crate::util::ecdsa::{self, EcdsaSig, EcdsaSigError};
-pub use crate::util::key::{KeyPair, PrivateKey, PublicKey, XOnlyPublicKey};
 pub use crate::util::merkleblock::MerkleBlock;
-pub use crate::util::schnorr::{self, SchnorrSig, SchnorrSigError};
-pub use crate::util::sighash::SchnorrSighashType;
-pub use crate::util::{psbt, Error};
 
 #[cfg(not(feature = "std"))]
 mod io_extras {
